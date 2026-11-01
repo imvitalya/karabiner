@@ -1,0 +1,52 @@
+{
+    "title": "Double tap Left Shift -> Cmd Shift Space",
+    "rules": [
+        {
+            "description": "Double tap Left Shift -> Cmd Shift Space",
+            "manipulators": [
+                {
+                    "conditions": [
+                        {
+                            "expression": "left_shift_x2_expiration > system.now.milliseconds",
+                            "type": "expression_if"
+                        }
+                    ],
+                    "from": {
+                        "key_code": "left_shift",
+                        "modifiers": { "optional": ["any"] }
+                    },
+                    "to": [
+                        {
+                            "set_variable": {
+                                "name": "left_shift_x2_expiration",
+                                "value": 0
+                            }
+                        },
+                        {
+                            "key_code": "spacebar",
+                            "modifiers": ["left_command", "left_shift"]
+                        },
+                        { "key_code": "vk_none" }
+                    ],
+                    "type": "basic"
+                },
+                {
+                    "from": {
+                        "key_code": "left_shift",
+                        "modifiers": { "optional": ["any"] }
+                    },
+                    "to": [
+                        {
+                            "set_variable": {
+                                "expression": "system.now.milliseconds + 300",
+                                "name": "left_shift_x2_expiration"
+                            }
+                        },
+                        { "key_code": "left_shift" }
+                    ],
+                    "type": "basic"
+                }
+            ]
+        }
+    ]
+}

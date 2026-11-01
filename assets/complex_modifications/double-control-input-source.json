@@ -1,0 +1,106 @@
+{
+    "title": "Double tap Left Control -> Russian PC / ABC (direct, standalone taps only)",
+    "rules": [
+        {
+            "description": "Double tap Left Control -> Russian PC / ABC (direct, standalone taps only)",
+            "manipulators": [
+                {
+                    "type": "basic",
+                    "from": {
+                        "key_code": "left_control",
+                        "modifiers": { "optional": ["caps_lock"] }
+                    },
+                    "to": [
+                        {
+                            "set_variable": {
+                                "name": "left_control_double_tap_pending",
+                                "value": false
+                            }
+                        },
+                        { "key_code": "left_control" }
+                    ],
+                    "parameters": { "basic.to_if_alone_timeout_milliseconds": 300 },
+                    "conditions": [
+                        {
+                            "type": "variable_if",
+                            "name": "left_control_double_tap_pending",
+                            "value": true
+                        },
+                        {
+                            "type": "input_source_if",
+                            "input_sources": [{ "input_source_id": "^com\\.apple\\.keylayout\\.RussianWin$" }]
+                        }
+                    ],
+                    "to_if_alone": [{ "select_input_source": { "input_source_id": "^com\\.apple\\.keylayout\\.ABC$" } }]
+                },
+                {
+                    "type": "basic",
+                    "from": {
+                        "key_code": "left_control",
+                        "modifiers": { "optional": ["caps_lock"] }
+                    },
+                    "to": [
+                        {
+                            "set_variable": {
+                                "name": "left_control_double_tap_pending",
+                                "value": false
+                            }
+                        },
+                        { "key_code": "left_control" }
+                    ],
+                    "parameters": { "basic.to_if_alone_timeout_milliseconds": 300 },
+                    "conditions": [
+                        {
+                            "type": "variable_if",
+                            "name": "left_control_double_tap_pending",
+                            "value": true
+                        },
+                        {
+                            "type": "input_source_if",
+                            "input_sources": [{ "input_source_id": "^com\\.apple\\.keylayout\\.ABC$" }]
+                        }
+                    ],
+                    "to_if_alone": [{ "select_input_source": { "input_source_id": "^com\\.apple\\.keylayout\\.RussianWin$" } }]
+                },
+                {
+                    "type": "basic",
+                    "from": {
+                        "key_code": "left_control",
+                        "modifiers": { "optional": ["caps_lock"] }
+                    },
+                    "to": [{ "key_code": "left_control" }],
+                    "to_if_alone": [
+                        {
+                            "set_variable": {
+                                "name": "left_control_double_tap_pending",
+                                "value": true
+                            }
+                        }
+                    ],
+                    "to_delayed_action": {
+                        "to_if_invoked": [
+                            {
+                                "set_variable": {
+                                    "name": "left_control_double_tap_pending",
+                                    "value": false
+                                }
+                            }
+                        ],
+                        "to_if_canceled": [
+                            {
+                                "set_variable": {
+                                    "name": "left_control_double_tap_pending",
+                                    "value": false
+                                }
+                            }
+                        ]
+                    },
+                    "parameters": {
+                        "basic.to_if_alone_timeout_milliseconds": 300,
+                        "basic.to_delayed_action_delay_milliseconds": 400
+                    }
+                }
+            ]
+        }
+    ]
+}
