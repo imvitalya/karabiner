@@ -1,0 +1,52 @@
+{
+    "title": "Double tap Right Control -> Control Shift Space",
+    "rules": [
+        {
+            "description": "Double tap Right Control -> Control Shift Space",
+            "manipulators": [
+                {
+                    "conditions": [
+                        {
+                            "expression": "right_control_x2_expiration > system.now.milliseconds",
+                            "type": "expression_if"
+                        }
+                    ],
+                    "from": {
+                        "key_code": "right_control",
+                        "modifiers": { "optional": ["any"] }
+                    },
+                    "to": [
+                        {
+                            "set_variable": {
+                                "name": "right_control_x2_expiration",
+                                "value": 0
+                            }
+                        },
+                        {
+                            "key_code": "spacebar",
+                            "modifiers": ["left_control", "left_shift"]
+                        },
+                        { "key_code": "vk_none" }
+                    ],
+                    "type": "basic"
+                },
+                {
+                    "from": {
+                        "key_code": "right_control",
+                        "modifiers": { "optional": ["any"] }
+                    },
+                    "to": [
+                        {
+                            "set_variable": {
+                                "expression": "system.now.milliseconds + 300",
+                                "name": "right_control_x2_expiration"
+                            }
+                        },
+                        { "key_code": "right_control" }
+                    ],
+                    "type": "basic"
+                }
+            ]
+        }
+    ]
+}

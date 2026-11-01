@@ -4,6 +4,63 @@
             "complex_modifications": {
                 "rules": [
                     {
+                        "description": "Caps Lock -> Left Control + Double tap -> Control Shift Space (MacBook only)",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "identifiers": [{ "is_built_in_keyboard": true }],
+                                        "type": "device_if"
+                                    },
+                                    {
+                                        "expression": "caps_lock_x2_expiration > system.now.milliseconds",
+                                        "type": "expression_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "caps_lock",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "caps_lock_x2_expiration",
+                                            "value": 0
+                                        }
+                                    },
+                                    {
+                                        "key_code": "spacebar",
+                                        "modifiers": ["left_control", "left_shift"]
+                                    },
+                                    { "key_code": "vk_none" }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "identifiers": [{ "is_built_in_keyboard": true }],
+                                        "type": "device_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "caps_lock",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "expression": "system.now.milliseconds + 300",
+                                            "name": "caps_lock_x2_expiration"
+                                        }
+                                    },
+                                    { "key_code": "left_control" }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
                         "description": "Zen Browser: Ctrl+J/K to switch tabs",
                         "manipulators": [
                             {
@@ -158,6 +215,53 @@
                         ]
                     },
                     {
+                        "description": "Double tap Right Control -> Control Shift Space",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "expression": "right_control_x2_expiration > system.now.milliseconds",
+                                        "type": "expression_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "right_control",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "right_control_x2_expiration",
+                                            "value": 0
+                                        }
+                                    },
+                                    {
+                                        "key_code": "spacebar",
+                                        "modifiers": ["left_control", "left_shift"]
+                                    },
+                                    { "key_code": "vk_none" }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "right_control",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "expression": "system.now.milliseconds + 300",
+                                            "name": "right_control_x2_expiration"
+                                        }
+                                    },
+                                    { "key_code": "right_control" }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
                         "description": "Double tap Left Shift -> Cmd Shift Space",
                         "manipulators": [
                             {
@@ -228,15 +332,6 @@
                         {
                             "from": { "key_code": "left_option" },
                             "to": [{ "key_code": "left_command" }]
-                        }
-                    ]
-                },
-                {
-                    "identifiers": { "is_keyboard": true },
-                    "simple_modifications": [
-                        {
-                            "from": { "key_code": "caps_lock" },
-                            "to": [{ "key_code": "left_control" }]
                         }
                     ]
                 }

@@ -2,13 +2,15 @@
 
 Моя конфигурация [Karabiner-Elements](https://karabiner-elements.pqrs.org/): переключение русской и английской раскладок, двойное нажатие Shift, управление вкладками Zen Browser и переназначения клавиш.
 
-Снимок рабочего профиля от 1 ноября 2026 года. Полная конфигурация находится в [`karabiner.json`](karabiner.json), отдельные правила для импорта — в [`assets/complex_modifications`](assets/complex_modifications).
+Снимок рабочего профиля от 2 ноября 2026 года. Полная конфигурация находится в [`karabiner.json`](karabiner.json), отдельные правила для импорта — в [`assets/complex_modifications`](assets/complex_modifications).
 
 ## Правила
 
 | Действие | Результат | Файл |
 | --- | --- | --- |
 | Двойной тап левого Ctrl | Русская — ПК ↔ ABC | [double-control-input-source.json](assets/complex_modifications/double-control-input-source.json) |
+| Caps Lock на встроенной клавиатуре MacBook | Работает как левый Ctrl; двойной тап отправляет Ctrl+Shift+Space | [caps-lock-control-shortcut.json](assets/complex_modifications/caps-lock-control-shortcut.json) |
+| Двойной тап правого Ctrl | Отправляет Ctrl+Shift+Space | [double-right-control-shortcut.json](assets/complex_modifications/double-right-control-shortcut.json) |
 | Двойное нажатие левого Shift | Отправляет Cmd+Shift+Space | [double-shift-shortcut.json](assets/complex_modifications/double-shift-shortcut.json) |
 | Ctrl+J / Ctrl+K в Zen Browser | Отправляет Ctrl+Tab / Ctrl+Shift+Tab для переключения вкладок | [zen-browser-tabs.json](assets/complex_modifications/zen-browser-tabs.json) |
 
@@ -23,6 +25,14 @@
 
 Ранее правило отправляло Ctrl+Shift+Space, назначенное в macOS на предыдущий источник ввода. При проверке это сочетание иногда оставляло прежнюю раскладку. Прямое переключение устранило пропуски при ручной проверке. Системное сочетание для переключения языка этому правилу не требуется.
 
+### Caps Lock и правый Ctrl
+
+Сохранено локальное поведение: Caps Lock на встроенной клавиатуре MacBook работает как левый Ctrl, а двойной тап отправляет Ctrl+Shift+Space. На внешних клавиатурах это правило не действует. Двойной тап правого Ctrl тоже отправляет Ctrl+Shift+Space; одиночное нажатие сохраняет обычный правый Ctrl.
+
+Интервал между нажатиями — 300 мс. Для переключения языка этими двумя правилами сочетание Ctrl+Shift+Space должно быть назначено в macOS на предыдущий источник ввода.
+
+Каждое правило обрабатывает свою клавишу. Дубли обработчиков левого и правого Ctrl из прежнего объединённого правила Caps Lock удалены, чтобы левый Ctrl использовал прямое переключение раскладки.
+
 ### Двойной Shift
 
 Интервал между нажатиями — 300 мс. Правило отправляет Cmd+Shift+Space; действие на это сочетание назначается отдельно в macOS или нужном приложении.
@@ -31,7 +41,6 @@
 
 В полном `karabiner.json` дополнительно сохранены:
 
-- Caps Lock → левый Ctrl для записи устройства с `is_keyboard: true`;
 - для устройства с `vendor_id: 14000`, `product_id: 12292`: левый Command → левый Option, левый Option → левый Command, левый Ctrl → Fn;
 - тип виртуальной клавиатуры ANSI и выбранный профиль `Default profile`.
 
@@ -56,7 +65,9 @@ mkdir -p "$karabiner_config_dir/assets/complex_modifications"
 cp assets/complex_modifications/*.json "$karabiner_config_dir/assets/complex_modifications/"
 ```
 
-В Karabiner-Elements открой **Complex Modifications → Add predefined rule** и включи нужные правила. Если уже есть прежнее правило двойного Ctrl, отключи его перед включением нового.
+В Karabiner-Elements открой **Complex Modifications → Add predefined rule** и включи нужные правила. Перед включением новых отключи прежнее правило двойного Ctrl и старое объединённое правило Caps Lock с обработчиками Ctrl.
+
+Если в **Simple Modifications** уже настроено Caps Lock → левый Ctrl, удали это переназначение перед включением отдельного правила Caps Lock. Иначе простое переназначение сработает раньше и правило двойного тапа Caps Lock не получит нажатия.
 
 ### Восстановление полного профиля
 
